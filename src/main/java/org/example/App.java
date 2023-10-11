@@ -7,17 +7,11 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
     {
         final Helper helper = Helper.getInstance();
-
-
         final JFrame frame = new JFrame("My First GUI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000,800);
@@ -25,11 +19,9 @@ public class App
         helper.setWindow(frame);
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel(); // the panel is not visible in output
-        JLabel label = new JLabel("Enter username");
+        JLabel label = new JLabel("Введіть ім'я");
         final JTextField tf = new JTextField(10); // accepts upto 10 characters
         JButton send = new JButton("Login");
-
-
         send.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,24 +42,17 @@ public class App
                 }
             }
         });
-        panel.add(label); // Components Added using Flow Layout
+        panel.add(label);
         panel.add(tf);
         panel.add(send);
-
         JPanel text = new JPanel();
         JLabel lText = new JLabel("Будь ласка, введіть ім'я користувача");
         text.add(lText);
         text.setBounds(0,0,1000,30);
-        //panel.setSize(1000,30);
         panel.setBounds(0,30,1000,30);
-
         frame.setLayout(null);
         frame.getContentPane().add(text);
         frame.getContentPane().add(panel);
-
-
         frame.setVisible(true);
-
-
     }
 }

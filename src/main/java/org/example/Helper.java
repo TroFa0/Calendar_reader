@@ -16,6 +16,7 @@ import java.util.List;
 public class Helper {
     private String user;
     private static final int movieDurability = 3;
+    private long days;
     private static Helper helper;
     private List<Pair> movies;
     private HashMap<String,String> map;
@@ -33,7 +34,7 @@ public void setWindow(JFrame frame){
 }
 
     private Helper(){
-
+    Calendar temp = Calendar.getInstance();
     movies = new ArrayList<>();
     File file  = new File("movieSchedule.txt");
     if(!file.exists())
@@ -49,11 +50,16 @@ public void setWindow(JFrame frame){
                         Integer.parseInt(arr[4]), Integer.parseInt(arr[5]), 0);
                 movies.add(new Pair(arr[0],calendar));
                 line = reader.readLine();
+
+                if(calendar.getTime().after(temp.getTime()))
+                    temp = (Calendar) calendar.clone();
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        days = (temp.getTime().getTime() - Calendar.getInstance().getTime().getTime())/86400000;
     }
 
     public void setMap(HashMap<String, String> map) {
@@ -61,14 +67,14 @@ public void setWindow(JFrame frame){
     }
     public void createPanel(){
 
-        JPanel panel2 = new JPanel(); // the panel is not visible in output
-        JLabel label2 = new JLabel("Chose calendar name");
+        JPanel panel2 = new JPanel();
+        JLabel label2 = new JLabel("Виберіть календар");
         final JComboBox<String> cb = new JComboBox<String>();
         for(Map.Entry e: map.entrySet())
             cb.addItem((String) e.getKey());
         JButton chose = new JButton("Chose");
 
-        panel2.add(label2); // Components Added using Flow Layout
+        panel2.add(label2);
         panel2.add(cb);
         panel2.add(chose);
         panel2.setVisible(true);
@@ -85,7 +91,10 @@ public void setWindow(JFrame frame){
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    textArea.selectAll();
+                    textArea.replaceSelection("\nФільми на які ви можете піти");
                     giveMovies(map.get((String)cb.getSelectedItem()));
+
                 } catch (GeneralSecurityException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -102,8 +111,7 @@ public void setWindow(JFrame frame){
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        System.out.println(calendar.getTime());
-        for(int i =0; i<5;i++){
+        for(int i =0; i<days;i++){
             List<Event> list = CalendarQuickstart.getEventsDay(user,s,calendar);
             if (list.isEmpty()) {
                 addMovieByCalendar(calendar);
