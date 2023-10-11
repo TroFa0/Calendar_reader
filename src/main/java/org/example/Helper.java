@@ -45,12 +45,18 @@ public void setWindow(JFrame frame){
             String line = reader.readLine();
             while (line != null) {
                 String[] arr = line.split(" ");
+                StringBuilder name = new StringBuilder();
+                for(int i =0;;i++){
+                    name.append(arr[i]);
+                    if(name.charAt(name.length()-1)=='\"')
+                        break;
+                    name.append(" ");
+                }
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Integer.parseInt(arr[1]), Integer.parseInt(arr[2])-1, Integer.parseInt(arr[3]),
-                        Integer.parseInt(arr[4]), Integer.parseInt(arr[5]), 0);
-                movies.add(new Pair(arr[0],calendar));
+                calendar.set(Integer.parseInt(arr[arr.length-5]), Integer.parseInt(arr[arr.length-4])-1, Integer.parseInt(arr[arr.length-3]),
+                        Integer.parseInt(arr[arr.length-2]), Integer.parseInt(arr[arr.length-1]), 0);
+                movies.add(new Pair(name.toString(),calendar));
                 line = reader.readLine();
-
                 if(calendar.getTime().after(temp.getTime()))
                     temp = (Calendar) calendar.clone();
             }
@@ -58,7 +64,6 @@ public void setWindow(JFrame frame){
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         days = (temp.getTime().getTime() - Calendar.getInstance().getTime().getTime())/86400000;
     }
 
@@ -190,6 +195,5 @@ public void setWindow(JFrame frame){
                 }
             }
         }
-
     }
 }
