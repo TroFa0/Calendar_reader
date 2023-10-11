@@ -116,7 +116,7 @@ public void setWindow(JFrame frame){
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        for(int i =0; i<days;i++){
+        for(int i =0; i<days+1;i++){
             List<Event> list = CalendarQuickstart.getEventsDay(user,s,calendar);
             if (list.isEmpty()) {
                 addMovieByCalendar(calendar);
