@@ -3,7 +3,6 @@ package org.example;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class Helper {
     private String user;
-    private int lastY = 60;
     private static final int movieDurability = 3;
     private static Helper helper;
     private List<Pair> movies;
@@ -37,8 +35,10 @@ public void setWindow(JFrame frame){
     private Helper(){
 
     movies = new ArrayList<>();
-    File file  = new File("src/main/java/org/example/movieSchedule.txt");
-        BufferedReader reader;
+    File file  = new File("movieSchedule.txt");
+    if(!file.exists())
+        file  = new File("src/main/java/org/example/movieSchedule.txt");
+    BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
@@ -86,9 +86,7 @@ public void setWindow(JFrame frame){
             public void actionPerformed(ActionEvent e) {
                 try {
                     giveMovies(map.get((String)cb.getSelectedItem()));
-                } catch (GeneralSecurityException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
+                } catch (GeneralSecurityException | IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
